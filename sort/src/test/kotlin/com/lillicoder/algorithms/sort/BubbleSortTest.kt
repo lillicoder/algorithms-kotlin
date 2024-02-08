@@ -6,31 +6,31 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /**
- * Unit tests for [Quicksort].
+ * Unit tests for [BubbleSort].
  */
-internal class QuicksortTest {
+internal class BubbleSortTest {
     @Test
-    fun `Quicksort handles empty list`() {
+    fun `Bubble sort handles empty list`() {
         val input = mutableListOf<Int>()
-        val actual = Quicksort().sort(input)
+        val actual = BubbleSort().sort(input)
 
         assertTrue(actual.isEmpty())
     }
 
     @Test
-    fun `Quicksort matches known concrete sorted list`() {
+    fun `Bubble sort matches known concrete sorted list`() {
         val input = listOf("delta", "tau", "zeta", "alpha", "gamma", "alpha", "beta", "epsilon")
         val expected = listOf("alpha", "alpha", "beta", "delta", "epsilon", "gamma", "tau", "zeta")
-        val actual = Quicksort().sort(input)
+        val actual = BubbleSort().sort(input)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `Quicksort matches Kotlin SDK for a random list`() {
+    fun `Bubble sort matches Kotlin SDK for a random list`() {
         val input = IntRange(1, 100).map { Random.Default.nextInt() }
         val expected = input.sorted()
-        val actual = Quicksort().sort(input)
+        val actual = BubbleSort().sort(input)
 
         assertEquals(expected, actual)
     }

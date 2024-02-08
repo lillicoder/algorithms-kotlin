@@ -4,11 +4,6 @@ package com.lillicoder.algorithms.sort
  * Implementation of [Quicksort](https://en.wikipedia.org/wiki/Quicksort).
  */
 class Quicksort : Sort {
-    /**
-     * Sorts the given [List] using Quicksort.
-     * @param list List to sort.
-     * @return Sorted list.
-     */
     override fun <T : Comparable<T>> sort(list: List<T>) = list.toMutableList().apply { sort(this) }
 
     /**
