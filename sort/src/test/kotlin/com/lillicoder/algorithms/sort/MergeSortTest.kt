@@ -6,31 +6,31 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /**
- * Unit tests for [InsertionSort].
+ * Unit tests for [MergeSort].
  */
-internal class InsertionSortTest {
+internal class MergeSortTest {
     @Test
-    fun `Insertion sort handles empty list`() {
+    fun `Merge sort handles empty list`() {
         val input = mutableListOf<Int>()
-        val actual = InsertionSort().sort(input)
+        val actual = MergeSort().sort(input)
 
         assertTrue(actual.isEmpty())
     }
 
     @Test
-    fun `Insertion sort matches known concrete sorted list`() {
+    fun `Merge sort matches known concrete sorted list`() {
         val input = listOf("delta", "tau", "zeta", "alpha", "gamma", "alpha", "beta", "epsilon")
         val expected = listOf("alpha", "alpha", "beta", "delta", "epsilon", "gamma", "tau", "zeta")
-        val actual = InsertionSort().sort(input)
+        val actual = MergeSort().sort(input)
 
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `Insertion sort matches Kotlin SDK for a random list`() {
+    fun `Merge sort matches Kotlin SDK for a random list`() {
         val input = IntRange(1, 100).map { Random.Default.nextInt() }
         val expected = input.sorted()
-        val actual = InsertionSort().sort(input)
+        val actual = MergeSort().sort(input)
 
         assertEquals(expected, actual)
     }
