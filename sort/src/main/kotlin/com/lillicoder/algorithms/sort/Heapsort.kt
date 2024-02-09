@@ -4,9 +4,11 @@ class Heapsort : Sort {
     override fun <T : Comparable<T>> sort(list: List<T>) = list.toMutableList().apply { sort(this) }
 
     private fun <T : Comparable<T>> sort(list: MutableList<T>) {
-        heapify(list)
+        if (list.isEmpty()) return
 
-        for (end in list.size..2) {
+        heapify(list)
+        
+        for (end in list.size - 1 downTo 1) {
             list.swap(end, 0)
             siftDown(list, 0, end)
         }
@@ -17,7 +19,7 @@ class Heapsort : Sort {
      * @param list List to heapify.
      */
     private fun <T : Comparable<T>> heapify(list: MutableList<T>) {
-        for (start in parent(list.size - 1) + 1..1) {
+        for (start in parent(list.size - 1) downTo 0) {
             siftDown(list, start, list.size)
         }
     }

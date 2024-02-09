@@ -12,7 +12,7 @@ internal class HeapsortTest {
     @Test
     fun `Heapsort handles empty list`() {
         val input = mutableListOf<Int>()
-        val actual = InsertionSort().sort(input)
+        val actual = Heapsort().sort(input)
 
         assertTrue(actual.isEmpty())
     }
@@ -21,7 +21,7 @@ internal class HeapsortTest {
     fun `Heapsort matches known concrete sorted list`() {
         val input = listOf("delta", "tau", "zeta", "alpha", "gamma", "alpha", "beta", "epsilon")
         val expected = listOf("alpha", "alpha", "beta", "delta", "epsilon", "gamma", "tau", "zeta")
-        val actual = InsertionSort().sort(input)
+        val actual = Heapsort().sort(input)
 
         assertEquals(expected, actual)
     }
@@ -30,7 +30,7 @@ internal class HeapsortTest {
     fun `Heapsort matches Kotlin SDK for a random list`() {
         val input = IntRange(1, 100).map { Random.Default.nextInt() }
         val expected = input.sorted()
-        val actual = InsertionSort().sort(input)
+        val actual = Heapsort().sort(input)
 
         assertEquals(expected, actual)
     }
