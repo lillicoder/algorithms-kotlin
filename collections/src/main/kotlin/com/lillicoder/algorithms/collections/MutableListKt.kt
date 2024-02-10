@@ -1,4 +1,4 @@
-package com.lillicoder.algorithms.sort
+package com.lillicoder.algorithms.collections
 
 import java.util.Collections
 

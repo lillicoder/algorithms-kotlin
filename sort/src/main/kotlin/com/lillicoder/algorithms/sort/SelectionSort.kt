@@ -1,5 +1,7 @@
 package com.lillicoder.algorithms.sort
 
+import com.lillicoder.algorithms.collections.swap
+
 /**
  * Implementation of [Selection Sort](https://en.wikipedia.org/wiki/Selection_sort).
  */

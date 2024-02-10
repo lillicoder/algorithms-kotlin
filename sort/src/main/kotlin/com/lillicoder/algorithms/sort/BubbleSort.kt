@@ -1,5 +1,7 @@
 package com.lillicoder.algorithms.sort
 
+import com.lillicoder.algorithms.collections.swap
+
 /**
  * Implementation of [Bubble Sort](https://en.wikipedia.org/wiki/Bubble_sort).
  */
