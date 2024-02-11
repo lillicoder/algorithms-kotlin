@@ -20,3 +20,4 @@ plugins {
 
 include("collections")
 include("sort")
+include("trees")

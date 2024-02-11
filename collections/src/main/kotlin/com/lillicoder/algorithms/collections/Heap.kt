@@ -8,6 +8,7 @@ class Heap<T : Comparable<T>>(
     private val buffer: MutableList<T> = collection.toMutableList(),
 ) {
     init {
+        collection.sorted()
         heapify(buffer)
     }
 
