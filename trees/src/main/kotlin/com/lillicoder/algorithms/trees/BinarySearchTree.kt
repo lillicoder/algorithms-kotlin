@@ -81,7 +81,7 @@ class BinarySearchTree<T : Comparable<T>>(
 
     /**
      * Gets the successor [BinaryNode] for the given node. The successor node is
-     * the node with he minimum key in a node's right subtree.
+     * the node with the minimum key in a node's right subtree.
      * @param node Node to get successor of.
      * @return Successor node.
      */
