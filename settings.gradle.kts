@@ -19,6 +19,7 @@ plugins {
 }
 
 include("collections")
+include("graphs")
 include("search")
 include("sort")
 include("trees")
