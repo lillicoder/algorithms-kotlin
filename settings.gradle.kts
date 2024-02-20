@@ -19,5 +19,6 @@ plugins {
 }
 
 include("collections")
+include("search")
 include("sort")
 include("trees")
