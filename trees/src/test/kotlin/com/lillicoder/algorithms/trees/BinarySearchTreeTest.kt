@@ -37,30 +37,21 @@ internal class BinarySearchTreeTest {
     @Test
     fun `In-order iterator walks tree properly`() {
         val expectedInOrder = listOf(1, 2, 3)
-        val actualInOrder = mutableListOf<Int>()
-        tree.iterator(Traversal.IN_ORDER).forEach {
-            actualInOrder.add(it)
-        }
+        val actualInOrder = tree.iterator(Traversal.IN_ORDER).asSequence().toList()
         assertEquals(expectedInOrder, actualInOrder)
     }
 
     @Test
     fun `Post-order iterator walks tree properly`() {
         val expectedPostOrder = listOf(1, 3, 2)
-        val actualPostOrder = mutableListOf<Int>()
-        tree.iterator(Traversal.POST_ORDER).forEach {
-            actualPostOrder.add(it)
-        }
+        val actualPostOrder = tree.iterator(Traversal.POST_ORDER).asSequence().toList()
         assertEquals(expectedPostOrder, actualPostOrder)
     }
 
     @Test
     fun `Pre-order iterator walks tree properly`() {
         val expectedPreorder = listOf(2, 1, 3)
-        val actualPreOrder = mutableListOf<Int>()
-        tree.iterator(Traversal.PRE_ORDER).forEach {
-            actualPreOrder.add(it)
-        }
+        val actualPreOrder = tree.iterator(Traversal.PRE_ORDER).asSequence().toList()
         assertEquals(expectedPreorder, actualPreOrder)
     }
 }

@@ -1,54 +1,46 @@
-package com.lillicoder.algorithms.collections
+package com.lillicoder.algorithms.trees
+
+import com.lillicoder.algorithms.collections.swap
 
 /**
- * Implementation of a [Heap](https://en.wikipedia.org/wiki/Heap_(data_structure)).
+ * Implementation of a [Binary Heap](https://en.wikipedia.org/wiki/Binary_heap).
  */
-class Heap<T : Comparable<T>>(
-    collection: Collection<T>,
-    private val buffer: MutableList<T> = collection.toMutableList(),
-) {
-    init {
-        collection.sorted()
+class BinaryHeap<T : Comparable<T>>() : Heap<T> {
+    private val buffer = mutableListOf<T>()
+
+    /**
+     * Instantiates this heap with the contents of the given [Collection].
+     * @param collection Collection.
+     * @return Heap.
+     */
+    constructor(collection: Collection<T>) : this() {
+        buffer.addAll(collection)
         heapify(buffer)
     }
 
-    /**
-     * Sorts this heap in place in the natural order of elements.
-     */
-    fun sort() {
-        for (end in buffer.size - 1 downTo 1) {
-            buffer.swap(end, 0)
-            siftDown(buffer, 0, end)
+    override fun insert(key: T) {
+        buffer.add(key)
+        heapify(buffer)
+    }
+
+    override fun delete(key: T) {
+        val position = buffer.indexOf(key)
+        if (position >= 0) {
+            buffer.swap(position, buffer.size - 1)
+            buffer.removeLast()
+            heapify(buffer)
         }
     }
 
-    /**
-     * Gets a heap of all elements stable sorted according to their natural sort order.
-     * @return Sorted heap.
-     */
-    fun sorted(): Heap<T> {
-        if (buffer.size < 1) return toHeap()
-        return toHeap().apply { sort() }
-    }
-
-    /**
-     * Gets a list containing all elements of this heap.
-     * @return List of all elements.
-     */
-    fun toList() = buffer.toList()
-
-    /**
-     * Gets a heap containing all elements of this heap
-     * @return Heap of all elements.
-     */
-    private fun toHeap() = Heap(buffer.toList())
+    // TODO Implement support for traversal types
+    override fun iterator(traversal: Traversal) = buffer.iterator()
 
     /**
      * Sorts elements of the given buffer in heap order.
      * @param buffer Buffer to sort.
      */
     private fun heapify(buffer: MutableList<T>) {
-        if (buffer.size < 1) return
+        if (buffer.size <= 1) return
 
         for (start in parent(buffer.size - 1) downTo 0) {
             siftDown(buffer, start, buffer.size)
@@ -61,13 +53,6 @@ class Heap<T : Comparable<T>>(
      * @return Left child index.
      */
     private fun leftChild(index: Int) = (2 * index) + 1
-
-    /**
-     * Gets the index of the right child node for the given index.
-     * @param index Index to get the right child of.
-     * @return Right child index.
-     */
-    private fun rightChild(index: Int) = (2 * index) + 2
 
     /**
      * Gets the index of the parent node for the given index.
