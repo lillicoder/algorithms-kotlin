@@ -29,7 +29,7 @@ fun <T : Comparable<T>> List<T>.binarySearch(toFind: T): Int {
  * @param toFind Element to find.
  * @return List position or -1 if there is no such element.
  */
-fun <T: Comparable<T>> List<T>.linearSearch(toFind: T): Int {
+fun <T : Comparable<T>> List<T>.linearSearch(toFind: T): Int {
     forEachIndexed { index, element ->
         if (element == toFind) return index
     }
