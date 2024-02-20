@@ -27,21 +27,19 @@ class BinarySearchTree<T : Comparable<T>>(
     ): BinaryNode<T>? {
         if (node == null) return null
 
-        if (key < node.key) {
-            node.left = delete(node.left, key)
+        return if (key < node.key) {
+            node.copy(left = delete(node.left, key))
         } else if (key > node.key) {
-            node.right = delete(node.right, key)
+            node.copy(right = delete(node.right, key))
         } else {
             if (node.left == null) return node.right
             if (node.right == null) return node.left
 
             // Time to delete; find successor and make a new node with that key and
             // a fixed right subtree by deleting the moved successor key
-            val successor = successor(node.right!!)
-            return BinaryNode(successor.key, node.left, delete(node.right, successor.key))
+            val successor = successor(node.right)
+            node.copy(key = successor.key, right = delete(node.right, successor.key))
         }
-
-        return node
     }
 
     override fun insert(key: T) {
@@ -59,13 +57,11 @@ class BinarySearchTree<T : Comparable<T>>(
     ): BinaryNode<T> {
         if (node == null) return BinaryNode(key)
 
-        if (key < node.key) {
-            node.left = insert(node.left, key)
+        return if (key < node.key) {
+            node.copy(left = insert(node.left, key))
         } else {
-            node.right = insert(node.right, key)
+            node.copy(right = insert(node.right, key))
         }
-
-        return node
     }
 
     override fun search(key: T): T? {
@@ -88,7 +84,7 @@ class BinarySearchTree<T : Comparable<T>>(
     private fun successor(node: BinaryNode<T>): BinaryNode<T> {
         return when (node.left) {
             null -> node
-            else -> successor(node.left!!)
+            else -> successor(node.left)
         }
     }
 }

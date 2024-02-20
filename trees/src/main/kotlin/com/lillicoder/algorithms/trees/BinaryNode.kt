@@ -7,7 +7,7 @@ package com.lillicoder.algorithms.trees
  */
 data class BinaryNode<T>(
     override val key: T,
-    var left: BinaryNode<T>? = null,
-    var right: BinaryNode<T>? = null,
+    val left: BinaryNode<T>? = null,
+    val right: BinaryNode<T>? = null,
     override val children: List<Node<T>> = listOfNotNull(left, right),
 ) : Node<T>
