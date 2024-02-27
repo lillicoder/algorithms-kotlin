@@ -5,14 +5,14 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 /**
- * Unit tests for [BinaryHeap].
+ * Unit tests for [ArrayBinaryHeap].
  */
-internal class BinaryHeapTest {
-    private lateinit var heap: BinaryHeap<Int>
+internal class ArrayBinaryHeapTest {
+    private lateinit var heap: ArrayBinaryHeap<Int>
 
     @BeforeTest
     fun before() {
-        heap = BinaryHeap()
+        heap = ArrayBinaryHeap()
         heap.insert(1)
         heap.insert(2)
         heap.insert(3)
