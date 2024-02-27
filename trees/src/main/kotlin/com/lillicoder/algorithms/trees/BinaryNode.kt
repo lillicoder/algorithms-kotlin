@@ -10,4 +10,5 @@ data class BinaryNode<T>(
     val left: BinaryNode<T>? = null,
     val right: BinaryNode<T>? = null,
     override val children: List<Node<T>> = listOfNotNull(left, right),
+    override val count: Int = 0
 ) : Node<T>

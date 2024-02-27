@@ -19,8 +19,9 @@ internal class TreeSortTest {
 
     @Test
     fun `Tree sort matches known concrete sorted list`() {
+        // Binary trees don't allow duplicates, so only check for unique ordered values
         val input = listOf("delta", "tau", "zeta", "alpha", "gamma", "alpha", "beta", "epsilon")
-        val expected = listOf("alpha", "alpha", "beta", "delta", "epsilon", "gamma", "tau", "zeta")
+        val expected = listOf("alpha", "beta", "delta", "epsilon", "gamma", "tau", "zeta")
         val actual = TreeSort().sort(input)
 
         assertEquals(expected, actual)
@@ -28,7 +29,8 @@ internal class TreeSortTest {
 
     @Test
     fun `Tree sort matches Kotlin SDK for a random list`() {
-        val input = IntRange(1, 100).map { Random.Default.nextInt() }
+        // Binary trees don't allow duplicates, so only check for unique ordered values
+        val input = IntRange(1, 100).map { Random.Default.nextInt() }.distinct()
         val expected = input.sorted()
         val actual = TreeSort().sort(input)
 

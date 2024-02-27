@@ -4,13 +4,25 @@ package com.lillicoder.algorithms.trees
  * Interface for implementations of a [BinaryTree](https://en.wikipedia.org/wiki/Binary_tree).
  */
 interface BinaryTree<T> : Tree<T> {
-    var root: BinaryNode<T>?
+    /**
+     * Gets the left child of the given node.
+     * @param key Key.
+     * @return Left child or null if there is no such node.
+     */
+    fun left(key: T): T?
+
+    /**
+     * Gets the right child of the given node.
+     * @param key Key.
+     * @return Right child or null if there is no such node.
+     */
+    fun right(key: T): T?
 
     override fun iterator(traversal: Traversal) =
         when (traversal) {
-            Traversal.PRE_ORDER -> PreOrderIterator(root)
-            Traversal.IN_ORDER -> InOrderIterator(root)
-            Traversal.POST_ORDER -> PostOrderIterator(root)
+            Traversal.IN_ORDER -> InOrderIterator(this)
+            Traversal.POST_ORDER -> PostOrderIterator(this)
+            Traversal.PRE_ORDER -> PreOrderIterator(this)
         }
 
     /**
@@ -18,12 +30,13 @@ interface BinaryTree<T> : Tree<T> {
      * @param root Root node of a tree.
      */
     private class InOrderIterator<T>(
-        root: BinaryNode<T>?,
+        private val tree: BinaryTree<T>,
+        root: T? = tree.root(),
     ) : Iterator<T> {
-        private val stack = ArrayDeque<BinaryNode<T>>()
+        private val stack = ArrayDeque<T>()
         private var current = root
 
-        override fun hasNext() = !stack.isEmpty() || current != null
+        override fun hasNext() = stack.isNotEmpty() || current != null
 
         override fun next(): T {
             val (key, next) = next(current)
@@ -36,16 +49,16 @@ interface BinaryTree<T> : Tree<T> {
          * @param node Starting node.
          * @return Pair of the next in-order value and next node to process.
          */
-        private fun next(node: BinaryNode<T>?): Pair<T, BinaryNode<T>?> {
+        private fun next(node: T?): Pair<T, T?> {
             var next = node
             while (hasNext()) {
                 if (next != null) {
                     stack.addFirst(next)
-                    next = next.left
+                    next = tree.left(next)
                 } else {
                     next = stack.removeFirst()
-                    val key = next.key
-                    next = next.right
+                    val key = next
+                    next = tree.right(next)
 
                     return Pair(key, next)
                 }
@@ -60,13 +73,14 @@ interface BinaryTree<T> : Tree<T> {
      * @param root Root node of a tree.
      */
     private class PostOrderIterator<T>(
-        root: BinaryNode<T>?,
+        private val tree: BinaryTree<T>,
+        root: T? = tree.root(),
     ) : Iterator<T> {
-        private val stack = ArrayDeque<BinaryNode<T>>()
+        private val stack = ArrayDeque<T>()
         private var current = root
-        private var lastVisited: BinaryNode<T>? = null
+        private var lastVisited: T? = null
 
-        override fun hasNext() = !stack.isEmpty() || current != null
+        override fun hasNext() = stack.isNotEmpty() || current != null
 
         override fun next(): T {
             val (key, last) = next(current, lastVisited)
@@ -76,21 +90,21 @@ interface BinaryTree<T> : Tree<T> {
         }
 
         private fun next(
-            node: BinaryNode<T>?,
-            last: BinaryNode<T>?,
-        ): Pair<T, BinaryNode<T>?> {
+            node: T?,
+            last: T?,
+        ): Pair<T, T?> {
             var next = node
             while (hasNext()) {
                 if (next != null) {
                     stack.addFirst(next)
-                    next = next.left
+                    next = tree.left(next)
                 } else {
                     val peek = stack.first()
-                    if (peek.right != null && last != peek.right) {
-                        next = peek.right
+                    val right = tree.right(peek)
+                    if (right != null && last != right) {
+                        next = right
                     } else {
-                        val key = peek.key
-                        return Pair(key, stack.removeFirst())
+                        return Pair(peek, stack.removeFirst())
                     }
                 }
             }
@@ -104,18 +118,19 @@ interface BinaryTree<T> : Tree<T> {
      * @param root Root node of a tree.
      */
     private class PreOrderIterator<T>(
-        root: BinaryNode<T>?,
+        private val tree: BinaryTree<T>,
+        root: T? = tree.root(),
     ) : Iterator<T> {
         private val stack = ArrayDeque(listOfNotNull(root))
 
-        override fun hasNext() = !stack.isEmpty()
+        override fun hasNext() = stack.isNotEmpty()
 
         override fun next(): T {
             val node = stack.removeFirst()
-            node.right?.let { stack.addFirst(it) }
-            node.left?.let { stack.addFirst(it) }
+            tree.right(node)?.let { stack.addFirst(it) }
+            tree.left(node)?.let { stack.addFirst(it) }
 
-            return node.key
+            return node
         }
     }
 }

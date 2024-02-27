@@ -18,6 +18,8 @@ class BinaryHeap<T : Comparable<T>>() : Heap<T> {
         heapify(buffer)
     }
 
+    override fun root(): T? = buffer.firstOrNull()
+
     override fun insert(key: T) {
         buffer.add(key)
         heapify(buffer)

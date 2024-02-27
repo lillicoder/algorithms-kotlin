@@ -13,4 +13,9 @@ interface Node<T> {
      * Children for this node.
      */
     val children: List<Node<T>>
+
+    /**
+     * Number of times this node's key occurs in its tree.
+     */
+    val count: Int
 }

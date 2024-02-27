@@ -26,6 +26,12 @@ interface Tree<T> : Iterable<T> {
     fun iterator(traversal: Traversal): Iterator<T>
 
     /**
+     * Gets the root node of this tree.
+     * @return Root node or null if this tree has no nodes.
+     */
+    fun root(): T?
+
+    /**
      * Searches this tree for the given key.
      * @param key Key to search for.
      * @return Found key or null if there is no such key.

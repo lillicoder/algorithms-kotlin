@@ -6,11 +6,17 @@ package com.lillicoder.algorithms.trees
 class BinarySearchTree<T : Comparable<T>>(
     collection: Collection<T>? = null,
 ) : BinaryTree<T> {
-    override var root: BinaryNode<T>? = null
+    private var root: BinaryNode<T>? = null
 
     init {
         collection?.forEach { insert(it) }
     }
+
+    override fun left(key: T) = searchNode(key)?.left?.key
+
+    override fun right(key: T) = searchNode(key)?.right?.key
+
+    override fun root(): T? = root?.key
 
     override fun delete(key: T) {
         root = delete(root, key)
@@ -32,6 +38,7 @@ class BinarySearchTree<T : Comparable<T>>(
         } else if (key > node.key) {
             node.copy(right = delete(node.right, key))
         } else {
+            if (node.count > 0) return node.copy(count = node.count.dec())
             if (node.left == null) return node.right
             if (node.right == null) return node.left
 
@@ -59,12 +66,16 @@ class BinarySearchTree<T : Comparable<T>>(
 
         return if (key < node.key) {
             node.copy(left = insert(node.left, key))
-        } else {
+        } else if (key > node.key) {
             node.copy(right = insert(node.right, key))
+        } else {
+            node.copy(count = node.count.inc())
         }
     }
 
-    override fun search(key: T): T? {
+    override fun search(key: T) = searchNode(key)?.key
+
+    private fun searchNode(key: T): BinaryNode<T>? {
         // Can rely on BST properties to more efficiently search subtrees
         // compared to the default implementation in the interface
         var node = root
@@ -72,7 +83,7 @@ class BinarySearchTree<T : Comparable<T>>(
             node = if (key < node.key) node.left else node.right
         }
 
-        return null
+        return node
     }
 
     /**
