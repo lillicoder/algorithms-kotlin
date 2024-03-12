@@ -5,5 +5,5 @@ package com.lillicoder.algorithms.graphs
  */
 enum class Traversal {
     BREADTH_FIRST,
-    DEPTH_FIRST
+    DEPTH_FIRST,
 }

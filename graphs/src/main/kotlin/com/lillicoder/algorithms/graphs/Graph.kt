@@ -4,7 +4,6 @@ package com.lillicoder.algorithms.graphs
  * Interface for implementations of a [Graph](https://en.wikipedia.org/wiki/Graph_(abstract_data_type)).
  */
 interface Graph<T> : Iterable<T> {
-
     /**
      * Implementation of an [Iterator] for a [Graph] that uses [Traversal.BREADTH_FIRST] order.
      * @param graph Graph to traverse.
@@ -12,7 +11,7 @@ interface Graph<T> : Iterable<T> {
     private class BreadthFirstIterator<T>(
         private val graph: Graph<T>,
         root: T = graph.root(),
-    ): Iterator<T> {
+    ) : Iterator<T> {
         private val queue = ArrayDeque(listOf(root))
         private val visited = mutableMapOf(root to true)
 
@@ -65,7 +64,10 @@ interface Graph<T> : Iterable<T> {
      * @param first First element.
      * @param second Second element.
      */
-    fun addEdge(first: T, second: T)
+    fun addEdge(
+        first: T,
+        second: T,
+    )
 
     /**
      * Adds the given element to this graph.
@@ -79,7 +81,10 @@ interface Graph<T> : Iterable<T> {
      * @param second Second element.
      * @return True if there is an edge between the elements, false otherwise.
      */
-    fun adjacent(first: T, second: T): Boolean
+    fun adjacent(
+        first: T,
+        second: T,
+    ): Boolean
 
     /**
      * Determines if this graph contains the given element.
@@ -115,7 +120,10 @@ interface Graph<T> : Iterable<T> {
      * @param first First element.
      * @param second Second element.
      */
-    fun removeEdge(first: T, second: T)
+    fun removeEdge(
+        first: T,
+        second: T,
+    )
 
     /**
      * Removes the given element from this graph.
