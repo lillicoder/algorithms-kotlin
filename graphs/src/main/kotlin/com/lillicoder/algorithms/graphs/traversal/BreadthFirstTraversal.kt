@@ -23,7 +23,7 @@ import com.lillicoder.algorithms.graphs.Vertex
  * Breadth-first [Traversal] of a given [Graph].
  * @param graph Graph to traverse.
  */
-class BreadthFirstIterator<T>(private val graph: Graph<T>) : Traversal<T> {
+class BreadthFirstTraversal<T>(private val graph: Graph<T>) : Traversal<T> {
     private val queue = ArrayDeque<Vertex<T>>()
     private val visited = linkedMapOf<Vertex<T>, Vertex<T>?>()
 
@@ -46,7 +46,12 @@ class BreadthFirstIterator<T>(private val graph: Graph<T>) : Traversal<T> {
             }
         }
 
-        return visited.keys.toList()
+        // Return empty list if an explicit destination was requested,
+        // otherwise give back the vertices in visited order
+        return when (destination == null) {
+            true -> visited.keys.toList()
+            else -> emptyList()
+        }
     }
 
     /**

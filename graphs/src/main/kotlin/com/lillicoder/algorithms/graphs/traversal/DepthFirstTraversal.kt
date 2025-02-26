@@ -23,7 +23,7 @@ import com.lillicoder.algorithms.graphs.Vertex
  * Depth-first [Traversal] of a given [Graph].
  * @param graph Graph to traverse.
  */
-private class DepthFirstIterator<T>(private val graph: Graph<T>) : Traversal<T> {
+class DepthFirstTraversal<T>(private val graph: Graph<T>) : Traversal<T> {
     private val stack = ArrayDeque<Vertex<T>>()
     private val visited = linkedMapOf<Vertex<T>, Boolean>()
     private val parent = mutableMapOf<Vertex<T>, Vertex<T>?>()
@@ -50,7 +50,12 @@ private class DepthFirstIterator<T>(private val graph: Graph<T>) : Traversal<T> 
             }
         }
 
-        return visited.keys.toList()
+        // Return empty list if an explicit destination was requested,
+        // otherwise give back the vertices in visited order
+        return when (destination == null) {
+            true -> visited.keys.toList()
+            else -> emptyList()
+        }
     }
 
     /**

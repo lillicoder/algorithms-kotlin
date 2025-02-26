@@ -1,181 +1,233 @@
 package com.lillicoder.algorithms.graphs
 
-import com.lillicoder.algorithms.graphs.traversal.Traversal
-import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 /**
  * Unit tests for [AdjacencyListGraph].
  */
 internal class AdjacencyListGraphTest {
-    private lateinit var graph: AdjacencyListGraph<Int>
+    private val graph =
+        graph {
+            vertex(1)
+            vertex(2)
+            vertex(3)
+            vertex(4)
+            vertex(5)
+            vertex(6)
 
-    @BeforeTest
-    fun before() {
-        graph = AdjacencyListGraph()
-        graph.addVertex(1)
-        graph.addVertex(2)
-        graph.addVertex(3)
+            edge(source = 1, destination = 2)
+            edge(source = 1, destination = 4)
+            edge(source = 2, destination = 1)
+            edge(source = 2, destination = 3)
+            edge(source = 2, destination = 4)
+            edge(source = 3, destination = 5)
+            edge(source = 4, destination = 5)
+            edge(source = 5, destination = 6)
+        }
+    private val emptyGraph = graph<Nothing> {}
+
+    @Test
+    fun `Default iterator is by vertex insert order`() {
+        val expected = listOf(0L, 1L, 2L, 3L, 4L, 5L)
+        val actual = graph.map { it.id }
+        assertContentEquals(expected, actual)
     }
 
     @Test
-    fun `Adds an edge between two existing nodes`() {
-        assertEquals(graph.adjacent(1, 2), false)
-        assertEquals(graph.adjacent(2, 1), false)
-
-        graph.addEdge(1, 2)
-        assertEquals(graph.adjacent(1, 2), true)
-        assertEquals(graph.adjacent(2, 1), true)
+    fun `Default iterator for empty graph is empty`() {
+        val expected = emptyList<Long>()
+        val actual = emptyGraph.map { it.id }
+        assertContentEquals(expected, actual)
     }
 
     @Test
-    fun `Adds same edge only once`() {
-        assertEquals(graph.neighbors(1).size, 0)
-        assertEquals(graph.neighbors(2).size, 0)
-
-        graph.addEdge(1, 2)
-        assertEquals(graph.neighbors(1).size, 1)
-        assertEquals(graph.neighbors(2).size, 1)
-
-        // Add same edge again, shouldn't mutate graph
-        graph.addEdge(1, 2)
-        assertEquals(graph.neighbors(1).size, 1)
-        assertEquals(graph.neighbors(2).size, 1)
-
-        // Also works in reverse
-        graph.addEdge(2, 1)
-        assertEquals(graph.neighbors(1).size, 1)
-        assertEquals(graph.neighbors(2).size, 1)
+    fun `Adjacency for valid connected vertices is true`() {
+        val actual =
+            graph.adjacent(
+                graph.vertex(0L)!!,
+                graph.vertex(1L)!!,
+            )
+        assertTrue(actual)
     }
 
     @Test
-    fun `Ignores adding an edge for non-existent nodes`() {
-        assertFalse(graph.contains(10))
-        assertFalse(graph.contains(20))
-
-        graph.addEdge(10, 20)
-        assertFalse(graph.contains(10))
-        assertFalse(graph.contains(20))
+    fun `Adjacency for valid unconnected vertices is false`() {
+        val actual =
+            graph.adjacent(
+                graph.vertex(0L)!!,
+                graph.vertex(5L)!!,
+            )
+        assertFalse(actual)
     }
 
     @Test
-    fun `Adds a new vertex`() {
-        assertFalse(graph.contains(10))
-
-        graph.addVertex(10)
-        assertTrue(graph.contains(10))
+    fun `Adjacency for invalid source vertex is false`() {
+        val actual =
+            graph.adjacent(
+                Vertex(100L, 123),
+                graph.vertex(5L)!!,
+            )
+        assertFalse(actual)
     }
 
     @Test
-    fun `Adds same vertex only once`() {
-        assertEquals(3, graph.size())
-
-        graph.addVertex(10)
-        assertEquals(4, graph.size())
-
-        graph.addVertex(10)
-        assertEquals(4, graph.size()) // Size should be same as before
+    fun `Adjacency for invalid destination vertex is false`() {
+        val actual =
+            graph.adjacent(
+                graph.vertex(0L)!!,
+                Vertex(100L, 123),
+            )
+        assertFalse(actual)
     }
 
     @Test
-    fun `New vertex has no neighbors`() {
-        assertEquals(graph.neighbors(10).size, 0) // Node doesn't exist yet
-
-        graph.addVertex(10)
-        assertEquals(graph.neighbors(10).size, 0) // Has no neighbors by default
+    fun `Adjacency for invalid vertices is false`() {
+        val actual =
+            graph.adjacent(
+                Vertex(100L, 123),
+                Vertex(101L, 321),
+            )
+        assertFalse(actual)
     }
 
     @Test
-    fun `Removes existing edge`() {
-        graph.addEdge(1, 2)
-        assertEquals(graph.adjacent(1, 2), true)
-        assertEquals(graph.adjacent(2, 1), true)
-
-        graph.removeEdge(1, 2)
-        assertEquals(graph.adjacent(1, 2), false)
-        assertEquals(graph.adjacent(2, 1), false)
-
-        // Also works in reverse
-        graph.addEdge(1, 2)
-        assertEquals(graph.adjacent(1, 2), true)
-        assertEquals(graph.adjacent(2, 1), true)
-
-        graph.removeEdge(2, 1)
-        assertEquals(graph.adjacent(1, 2), false)
-        assertEquals(graph.adjacent(2, 1), false)
+    fun `Edge for valid vertices matches expected`() {
+        val actual =
+            graph.edge(
+                graph.vertex(0L)!!,
+                graph.vertex(1L)!!,
+            )!!
+        assertEquals(0L, actual.source.id)
+        assertEquals(1L, actual.destination.id)
+        assertFalse(actual.directed)
+        assertEquals(0L, actual.weight)
     }
 
     @Test
-    fun `Remove ignores non-existent edge`() {
-        assertEquals(graph.adjacent(1, 2), false)
-        assertEquals(graph.adjacent(2, 1), false)
-
-        graph.removeEdge(1, 2)
-        assertEquals(graph.adjacent(1, 2), false)
-        assertEquals(graph.adjacent(2, 1), false)
-
-        // Also works in reverse
-        graph.removeEdge(2, 1)
-        assertEquals(graph.adjacent(1, 2), false)
-        assertEquals(graph.adjacent(2, 1), false)
+    fun `Edge for invalid destination vertex is null`() {
+        val actual =
+            graph.edge(
+                graph.vertex(0L)!!,
+                Vertex(100L, 123),
+            )
+        assertNull(actual)
     }
 
     @Test
-    fun `Removes existing vertex`() {
-        assertTrue(graph.contains(3))
-
-        graph.removeVertex(3)
-        assertFalse(graph.contains(3))
+    fun `Edge for invalid source vertex is null`() {
+        val actual =
+            graph.edge(
+                Vertex(100L, 123),
+                graph.vertex(1L)!!,
+            )
+        assertNull(actual)
     }
 
     @Test
-    fun `Remove ignores non-existent vertex`() {
-        assertFalse(graph.contains(10))
-
-        graph.removeVertex(10)
-        assertFalse(graph.contains(10))
+    fun `Edge for invalid vertices is null`() {
+        val actual =
+            graph.edge(
+                Vertex(100L, 123),
+                Vertex(101L, 321),
+            )
+        assertNull(actual)
     }
 
     @Test
-    fun `Traverses in breadth-first order`() {
-        graph.addVertex(4)
-        graph.addVertex(5)
-        graph.addVertex(6)
-        graph.addVertex(7)
+    fun `Neighbors for a vertex match expected`() {
+        val expected = listOf(1L, 3L)
+        val actual =
+            graph.neighbors(
+                graph.vertex(0L)!!,
+            ).map {
+                it.id
+            }
+        assertContentEquals(expected, actual)
+    }
 
-        graph.addEdge(1, 2)
-        graph.addEdge(1, 3)
-        graph.addEdge(1, 4)
-        graph.addEdge(2, 5)
-        graph.addEdge(2, 6)
-        graph.addEdge(3, 7)
-        graph.addEdge(4, 6)
+    @Test
+    fun `Neighbors for a non-existent vertex is empty`() {
+        val expected = emptyList<Long>()
+        val actual =
+            graph.neighbors(
+                Vertex(100L, 123),
+            ).map {
+                it.id
+            }
+        assertContentEquals(expected, actual)
+    }
 
-        val expected = listOf(1, 2, 3, 4, 5, 6, 7)
-        val actual = graph.iterator(Traversal.BREADTH_FIRST).asSequence().toList()
+    @Test
+    fun `Root vertex is first inserted vertex`() {
+        val expected = 0L
+        val actual = graph.root()!!
+        assertEquals(expected, actual.id)
+    }
+
+    @Test
+    fun `Root vertex is null for empty graph`() {
+        val actual = emptyGraph.root()
+        assertNull(actual)
+    }
+
+    @Test
+    fun `Size matches expected`() {
+        val expected = 6
+        val actual = graph.size()
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `Traverses in depth-first order`() {
-        graph.addVertex(4)
-        graph.addVertex(5)
-        graph.addVertex(6)
-        graph.addVertex(7)
-
-        graph.addEdge(1, 2)
-        graph.addEdge(1, 3)
-        graph.addEdge(1, 4)
-        graph.addEdge(2, 5)
-        graph.addEdge(2, 6)
-        graph.addEdge(3, 7)
-        graph.addEdge(4, 6)
-
-        val expected = listOf(1, 4, 6, 3, 7, 2, 5)
-        val actual = graph.iterator(Traversal.DEPTH_FIRST).asSequence().toList()
+    fun `Size is zero for empty graph`() {
+        val expected = 0
+        val actual = emptyGraph.size()
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `Sub-graph for existing vertices matches expected`() {
+        val vertices =
+            listOf(
+                graph.vertex(0L)!!,
+                graph.vertex(1L)!!,
+                graph.vertex(2L)!!,
+            )
+        val subgraph = graph.subgraph(vertices)
+
+        // Check vertices
+        val actual =
+            listOf(
+                subgraph.vertex(0L)!!,
+                subgraph.vertex(1L)!!,
+                subgraph.vertex(2L)!!,
+            )
+        assertContentEquals(vertices, actual)
+
+        // Check edges
+        assertTrue(subgraph.adjacent(actual[0], actual[1])) // edge for 1-2 and 2-1
+        assertTrue(subgraph.adjacent(actual[1], actual[2])) // edge for 2-3
+
+        // Check neighbors
+        assertEquals(1, subgraph.neighbors(actual[0]).size)
+        assertEquals(2, subgraph.neighbors(actual[1]).size)
+        assertEquals(1, subgraph.neighbors(actual[2]).size)
+    }
+
+    @Test
+    fun `Vertex by ID gets correct vertex`() {
+        val expected = 2L
+        val actual = graph.vertex(expected)
+        assertEquals(expected, actual!!.id)
+    }
+
+    @Test
+    fun `Vertex for invalid ID is null`() {
+        val actual = graph.vertex(100L)
+        assertNull(actual)
     }
 }
