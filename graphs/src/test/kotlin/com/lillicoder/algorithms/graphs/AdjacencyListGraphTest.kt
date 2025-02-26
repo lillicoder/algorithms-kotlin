@@ -1,5 +1,6 @@
 package com.lillicoder.algorithms.graphs
 
+import com.lillicoder.algorithms.graphs.traversal.Traversal
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
