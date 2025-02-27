@@ -64,6 +64,7 @@ interface Graph<T> : Iterable<Vertex<T>> {
 
     /**
      * Gets the number of vertices in this graph.
+     * @return Size.
      */
     fun size(): Int
 
