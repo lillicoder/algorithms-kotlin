@@ -20,6 +20,7 @@ plugins {
 
 include("collections")
 include("graphs")
+include("heaps")
 include("search")
 include("sort")
 include("trees")

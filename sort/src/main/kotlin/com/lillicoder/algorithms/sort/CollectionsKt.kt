@@ -17,7 +17,7 @@
 package com.lillicoder.algorithms.sort
 
 import com.lillicoder.algorithms.collections.swap
-import com.lillicoder.algorithms.trees.ArrayBinaryHeap
+import com.lillicoder.algorithms.heaps.ArrayBinaryHeap
 import com.lillicoder.algorithms.trees.BinarySearchTree
 
 /***************
