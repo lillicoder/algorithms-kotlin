@@ -54,11 +54,49 @@ fun <T : Comparable<T>> MutableList<T>.bubbleSort() {
  * Heapsort *
  ************/
 
+// TODO Reconcile this implementation with the heap types in the trees package
 /**
  * Returns a list of all elements sorted according to their natural sort order
  * using [Heapsort](https://en.wikipedia.org/wiki/Heapsort).
  */
-fun <T : Comparable<T>> Collection<T>.heapSorted() = ArrayBinaryHeap(this).sorted().toList()
+fun <T : Comparable<T>> Collection<T>.heapSorted(): List<T> {
+    val heapified = ArrayBinaryHeap(this).toMutableList()
+
+    var end = heapified.size
+    while (end > 1) {
+        end -= 1
+        heapified.swap(end, 0)
+        heapified.siftDown(0, end)
+    }
+
+    return heapified.toList()
+}
+
+/**
+ * Gets the index of the left child for this index.
+ * @return Left child index.
+ */
+private fun Int.leftChild() = (2 * this) + 1
+
+/**
+ * Performs a heap sift-down on this list.
+ */
+private fun <T : Comparable<T>> MutableList<T>.siftDown(start: Int, end: Int) {
+    var root = start
+    while (root.leftChild() < end) {
+        var child = root.leftChild()
+        if (child + 1 < end && get(child) < get(child + 1)) {
+            child++
+        }
+
+        if (get(root) < get(child)) {
+            swap(root, child)
+            root = child
+        } else {
+            return
+        }
+    }
+}
 
 /******************
  * Insertion Sort *
@@ -229,4 +267,5 @@ fun <T : Comparable<T>> MutableList<T>.selectionSort() {
  * Returns a list of all elements sorted according to their natural sort order
  * using [tree sort](https://en.wikipedia.org/wiki/Tree_sort).
  */
-fun <T : Comparable<T>> Collection<T>.treeSorted() = BinarySearchTree(this).sorted()
+// In-order iteration is sorted, just return a list
+fun <T : Comparable<T>> Collection<T>.treeSorted() = BinarySearchTree(this).toList()
