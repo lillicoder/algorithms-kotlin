@@ -24,7 +24,7 @@ import kotlin.test.assertTrue
 /**
  * Unit tests for sort extensions.
  */
-internal class CollectionKtTest {
+internal class CollectionsKtTest {
     /***************
      * Bubble Sort *
      ***************/
@@ -221,7 +221,7 @@ internal class CollectionKtTest {
     fun `Tree sort matches known concrete sorted list`() {
         // Binary trees don't allow duplicates, so only check for unique ordered values
         val input = listOf("delta", "tau", "zeta", "alpha", "gamma", "alpha", "beta", "epsilon")
-        val expected = listOf("alpha", "beta", "delta", "epsilon", "gamma", "tau", "zeta")
+        val expected = listOf("alpha", "alpha", "beta", "delta", "epsilon", "gamma", "tau", "zeta")
         val actual = input.treeSorted()
 
         assertEquals(expected, actual)

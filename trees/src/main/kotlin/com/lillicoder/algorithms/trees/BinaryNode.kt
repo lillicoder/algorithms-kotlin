@@ -1,14 +1,15 @@
 package com.lillicoder.algorithms.trees
 
 /**
- * Implementation of a [Node] for a [BinaryTree].
+ * [Node] that supports optional left and right children.
+ * @param id ID for this node.
+ * @param value Value for this node.
  * @param left Optional left child node.
  * @param right Optional right child node.
  */
 data class BinaryNode<T>(
-    override val key: T,
+    override val id: Long,
+    override val value: T,
     val left: BinaryNode<T>? = null,
     val right: BinaryNode<T>? = null,
-    override val children: List<Node<T>> = listOfNotNull(left, right),
-    override val count: Int = 0,
 ) : Node<T>

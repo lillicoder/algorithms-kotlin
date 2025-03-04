@@ -17,9 +17,19 @@
 package com.lillicoder.algorithms.trees
 
 /**
- * Interface for a node of a [BinaryTree].
+ * Gets the index of the left child for this index.
+ * @return Left child index.
  */
-interface Node<T> {
-    val id: Long
-    val value: T
-}
+fun Int.leftChild() = (2 * this) + 1
+
+/**
+ * Gets the index of the parent for this index.
+ * @return Parent index.
+ */
+fun Int.parent() = this - 1 ushr 1
+
+/**
+ * Gets the index of the right child for this index.
+ * @return Right child index.
+ */
+fun Int.rightChild() = (2 * this) + 2

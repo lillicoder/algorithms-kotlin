@@ -17,8 +17,10 @@
 package com.lillicoder.algorithms.sort
 
 import com.lillicoder.algorithms.collections.swap
-import com.lillicoder.algorithms.heaps.ArrayBinaryHeap
+import com.lillicoder.algorithms.heaps.heapified
+import com.lillicoder.algorithms.heaps.siftDown
 import com.lillicoder.algorithms.trees.BinarySearchTree
+import com.lillicoder.algorithms.trees.traversal.InOrderTraversal
 
 // ***************
 // * Bubble Sort *
@@ -54,14 +56,12 @@ fun <T : Comparable<T>> MutableList<T>.bubbleSort() {
 // * Heapsort *
 // ************
 
-// TODO Reconcile this implementation with the heap types in the trees package
-
 /**
  * Returns a list of all elements sorted according to their natural sort order
  * using [Heapsort](https://en.wikipedia.org/wiki/Heapsort).
  */
 fun <T : Comparable<T>> Collection<T>.heapSorted(): List<T> {
-    val heapified = ArrayBinaryHeap(this).toMutableList()
+    val heapified = heapified().toMutableList()
 
     var end = heapified.size
     while (end > 1) {
@@ -71,35 +71,6 @@ fun <T : Comparable<T>> Collection<T>.heapSorted(): List<T> {
     }
 
     return heapified.toList()
-}
-
-/**
- * Gets the index of the left child for this index.
- * @return Left child index.
- */
-private fun Int.leftChild() = (2 * this) + 1
-
-/**
- * Performs a heap sift-down on this list.
- */
-private fun <T : Comparable<T>> MutableList<T>.siftDown(
-    start: Int,
-    end: Int,
-) {
-    var root = start
-    while (root.leftChild() < end) {
-        var child = root.leftChild()
-        if (child + 1 < end && get(child) < get(child + 1)) {
-            child++
-        }
-
-        if (get(root) < get(child)) {
-            swap(root, child)
-            root = child
-        } else {
-            return
-        }
-    }
 }
 
 // ******************
@@ -271,4 +242,10 @@ fun <T : Comparable<T>> MutableList<T>.selectionSort() {
  * Returns a list of all elements sorted according to their natural sort order
  * using [tree sort](https://en.wikipedia.org/wiki/Tree_sort).
  */
-fun <T : Comparable<T>> Collection<T>.treeSorted() = BinarySearchTree(this).toList()
+fun <T : Comparable<T>> Collection<T>.treeSorted() =
+    if (isEmpty()) {
+        emptyList()
+    } else {
+        val tree = BinarySearchTree(this)
+        InOrderTraversal(tree).path(tree.root()!!).map { it.value }
+    }

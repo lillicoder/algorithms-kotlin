@@ -1,16 +1,14 @@
 package com.lillicoder.algorithms.graphs
 
+import com.lillicoder.algorithms.collections.dequeOfNotNull
+
 /**
  * Interface for implementations of a [Graph](https://en.wikipedia.org/wiki/Graph_(abstract_data_type)).
  */
 interface Graph<T> : Iterable<Vertex<T>> {
     override fun iterator() =
         object : Iterator<Vertex<T>> {
-            private val queue =
-                ArrayDeque<Vertex<T>>().also {
-                    val root = root()
-                    if (root != null) it.add(root)
-                }
+            private val queue = dequeOfNotNull(root())
             private val visited =
                 linkedMapOf<Vertex<T>, Boolean>().also {
                     val root = root()

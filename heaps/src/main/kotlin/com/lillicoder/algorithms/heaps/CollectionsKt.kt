@@ -16,9 +16,8 @@
 
 package com.lillicoder.algorithms.heaps
 
-import com.lillicoder.algorithms.trees.BinaryTree
-
 /**
- * Interface for implementations of a [Binary Heap](https://en.wikipedia.org/wiki/Binary_heap).
+ * Returns a new list of all elements in heap order.
+ * @return Heapified list.
  */
-interface BinaryHeap<T> : BinaryTree<T>
+fun <T : Comparable<T>> Iterable<T>.heapified(): List<T> = toMutableList().also { it.heapify() }

@@ -16,6 +16,7 @@
 
 package com.lillicoder.algorithms.graphs.traversal
 
+import com.lillicoder.algorithms.collections.dequeOf
 import com.lillicoder.algorithms.graphs.Graph
 import com.lillicoder.algorithms.graphs.Vertex
 
@@ -24,7 +25,7 @@ import com.lillicoder.algorithms.graphs.Vertex
  * @param graph Graph to traverse.
  */
 class BreadthFirstTraversal<T>(private val graph: Graph<T>) : Traversal<T> {
-    private val queue = ArrayDeque<Vertex<T>>()
+    private val queue = dequeOf<Vertex<T>>()
     private val visited = linkedMapOf<Vertex<T>, Vertex<T>?>()
 
     override fun path(

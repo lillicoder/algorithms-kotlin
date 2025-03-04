@@ -14,11 +14,23 @@
  * limitations under the License.
  */
 
-package com.lillicoder.algorithms.heaps
+package com.lillicoder.algorithms.trees.traversal
 
-import com.lillicoder.algorithms.trees.Tree
+import com.lillicoder.algorithms.trees.BinaryTree
+import com.lillicoder.algorithms.trees.Node
 
 /**
- * Interface for implementations of a [Heap](https://en.wikipedia.org/wiki/Heap_(data_structure)).
+ * A traversal method for a [BinaryTree].
  */
-interface Heap<T> : Tree<T>
+interface Traversal<T> {
+    /**
+     * Gets the path from the given start [Node].
+     * @param start Start node.
+     * @param destination Optional destination node. If null, all nodes will be visited.
+     * @return Path taken.
+     */
+    fun path(
+        start: Node<T>,
+        destination: Node<T>? = null,
+    ): List<Node<T>>
+}
