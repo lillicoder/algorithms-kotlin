@@ -16,8 +16,8 @@
 
 package com.lillicoder.algorithms.graphs.traversal
 
-import com.lillicoder.algorithms.graphs.graph
 import com.lillicoder.algorithms.graphs.Vertex
+import com.lillicoder.algorithms.graphs.graph
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 

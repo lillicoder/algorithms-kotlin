@@ -20,9 +20,9 @@ import com.lillicoder.algorithms.collections.swap
 import com.lillicoder.algorithms.heaps.ArrayBinaryHeap
 import com.lillicoder.algorithms.trees.BinarySearchTree
 
-/***************
- * Bubble Sort *
- ***************/
+// ***************
+// * Bubble Sort *
+// ***************
 
 /**
  * Returns a list of all elements sorted according to their natural sort order
@@ -50,11 +50,12 @@ fun <T : Comparable<T>> MutableList<T>.bubbleSort() {
     } while (didSwap)
 }
 
-/************
- * Heapsort *
- ************/
+// ************
+// * Heapsort *
+// ************
 
 // TODO Reconcile this implementation with the heap types in the trees package
+
 /**
  * Returns a list of all elements sorted according to their natural sort order
  * using [Heapsort](https://en.wikipedia.org/wiki/Heapsort).
@@ -81,7 +82,10 @@ private fun Int.leftChild() = (2 * this) + 1
 /**
  * Performs a heap sift-down on this list.
  */
-private fun <T : Comparable<T>> MutableList<T>.siftDown(start: Int, end: Int) {
+private fun <T : Comparable<T>> MutableList<T>.siftDown(
+    start: Int,
+    end: Int,
+) {
     var root = start
     while (root.leftChild() < end) {
         var child = root.leftChild()
@@ -98,9 +102,9 @@ private fun <T : Comparable<T>> MutableList<T>.siftDown(start: Int, end: Int) {
     }
 }
 
-/******************
- * Insertion Sort *
- ******************/
+// ******************
+// * Insertion Sort *
+// ******************
 
 /**
  * Returns a list of all elements sorted according to their natural sort order
@@ -124,9 +128,9 @@ fun <T : Comparable<T>> MutableList<T>.insertionSort() {
     }
 }
 
-/**************
- * Merge Sort *
- **************/
+// **************
+// * Merge Sort *
+// **************
 
 /**
  * Returns a list of all elements sorted according to their natural sort order
@@ -146,7 +150,7 @@ fun <T : Comparable<T>> List<T>.mergeSorted(): List<T> {
  * @param other List to merge.
  * @return Merged list.
  */
-private fun <T: Comparable<T>> List<T>.merge(other: List<T>): List<T> {
+private fun <T : Comparable<T>> List<T>.merge(other: List<T>): List<T> {
     val merged = mutableListOf<T>()
 
     var leftPosition = 0
@@ -187,9 +191,9 @@ private fun <T: Comparable<T>> List<T>.merge(other: List<T>): List<T> {
     return merged
 }
 
-/*************
- * Quicksort *
- *************/
+// *************
+// * Quicksort *
+// *************
 
 /**
  * Returns a list of all elements sorted according to their natural sort order
@@ -201,7 +205,7 @@ fun <T : Comparable<T>> List<T>.quicksorted() = toMutableList().apply { quicksor
  * Sorts elements in this list in-place according to their natural sort order
  * using [quicksort](https://en.wikipedia.org/wiki/Quicksort).
  */
-fun <T: Comparable<T>> MutableList<T>.quicksort() {
+fun <T : Comparable<T>> MutableList<T>.quicksort() {
     if (isEmpty()) return
 
     val pivot = partition()
@@ -231,9 +235,9 @@ private fun <T : Comparable<T>> MutableList<T>.partition(): Int {
     return pivotIndex
 }
 
-/******************
- * Selection Sort *
- ******************/
+// ******************
+// * Selection Sort *
+// ******************
 
 /**
  * Returns a list of all elements sorted according to their natural sort order
@@ -259,13 +263,12 @@ fun <T : Comparable<T>> MutableList<T>.selectionSort() {
     }
 }
 
-/*************
- * Tree Sort *
- *************/
+// *************
+// * Tree Sort *
+// *************
 
 /**
  * Returns a list of all elements sorted according to their natural sort order
  * using [tree sort](https://en.wikipedia.org/wiki/Tree_sort).
  */
-// In-order iteration is sorted, just return a list
 fun <T : Comparable<T>> Collection<T>.treeSorted() = BinarySearchTree(this).toList()

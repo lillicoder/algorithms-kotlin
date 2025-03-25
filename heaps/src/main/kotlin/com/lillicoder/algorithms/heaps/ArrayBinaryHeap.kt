@@ -38,15 +38,15 @@ class ArrayBinaryHeap<T : Comparable<T>>() : BinaryHeap<T> {
     override fun left(key: T) =
         buffer.getOrNull(
             leftChild(
-                buffer.indexOf(key)
-            )
+                buffer.indexOf(key),
+            ),
         )
 
     override fun right(key: T) =
         buffer.getOrNull(
             rightChild(
-                buffer.indexOf(key)
-            )
+                buffer.indexOf(key),
+            ),
         )
 
     override fun root(): T? = buffer.firstOrNull()
